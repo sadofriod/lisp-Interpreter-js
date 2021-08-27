@@ -29,4 +29,22 @@ namespace StateMachine {
 		valid = "valid",
 		end = "end",
 	}
+
+	type WordType = "keyword" | "Symbols" | "variable";
+
+	type KeywordsStr = "define" | "cond" | "if" | "let" | "set";
+	type SymbolsStr = "(" | ")" | "[" | "]" | "," | "+" | "-" | "*" | "/" | "%" | "||" | "&&" | "!";
+
+	interface createSuffixTreeReturn {
+		[key: string]: {
+			[char: string]: number;
+		};
+	}
+	interface CreateSuffixTree {
+		(keywords: KeywordsStr): createSuffixTreeReturn;
+	}
+
+	interface GetKeywordsSuffixTree {
+		(keywords: KeywordsStr[]): createSuffixTreeReturn;
+	}
 }
