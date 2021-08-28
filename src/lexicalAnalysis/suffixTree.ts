@@ -1,9 +1,12 @@
+import { keywords } from "constant";
+
 const createSuffixTree: StateMachine.CreateSuffixTree = (keyword) => {
 	const result: StateMachine.createSuffixTreeReturn = {};
 
 	for (let index = 1; index < keywords.length; index++) {
 		const char = keyword.charAt(index);
 		const previous = keyword.charAt(index - 1);
+		const next = keyword.charAt(index + 1);
 		const isCharExsit = char in result;
 		const isPreExsit = previous in result;
 		if (isPreExsit) {
@@ -13,6 +16,9 @@ const createSuffixTree: StateMachine.CreateSuffixTree = (keyword) => {
 		}
 		if (!isCharExsit) {
 			result[char] = {};
+		}
+		if (!next) {
+			result[char] = { ...result[char], empty: 1 };
 		}
 	}
 
