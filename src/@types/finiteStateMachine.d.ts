@@ -37,10 +37,10 @@ namespace StateMachine {
 		};
 	}
 	interface CreateSuffixTree {
-		(keywords: KeywordsStr): createSuffixTreeReturn;
+		(keywords: string): createSuffixTreeReturn;
 	}
 
 	interface GetKeywordsSuffixTree {
-		(keywords: KeywordsStr[]): createSuffixTreeReturn;
+		(keywords: string): createSuffixTreeReturn;
 	}
 }

@@ -1,12 +1,12 @@
-import { symbolsMap } from "constant";
+import { symbolsMap } from "../constant";
 
 let charCache: string = "";
 let isKeyword = NaN;
 
 const checkCharType: AST.CheckCharType = (char, suffixTree) => {
 	const isSymbol = char in symbolsMap || char === " ";
-
 	if (char === " " && !charCache) {
+		isKeyword = NaN;
 		return;
 	}
 
@@ -15,14 +15,17 @@ const checkCharType: AST.CheckCharType = (char, suffixTree) => {
 			val: charCache,
 			type: isKeyword === 1 ? "keyword" : "variable",
 		};
+		isKeyword = NaN;
 		charCache = "";
 		return result;
 	}
 	const cacheLen = charCache.length;
 	const previousChar = charCache.charAt(cacheLen - 1);
 	const previousSuffixTree = suffixTree[previousChar];
-	const isBelongToKeyword = char in previousSuffixTree;
+	const isBelongToKeyword = previousSuffixTree && char in previousSuffixTree;
+	// console.log(previousSuffixTree);
 
+	charCache += char;
 	if (!isBelongToKeyword) {
 		isKeyword = 0;
 	}
@@ -36,9 +39,12 @@ const checkCharType: AST.CheckCharType = (char, suffixTree) => {
 export const create: AST.Create = (code, suffixTree) => {
 	const result: AST.ASTNode[] = [];
 	let previous = 0;
+	console.log(suffixTree);
+
 	for (let index = 0; index < code.length; index++) {
 		const char = code.charAt(index);
 		const isSymbol = char in symbolsMap || char === " ";
+
 		const word = checkCharType(char, suffixTree);
 		// const
 		if (isSymbol && word) {

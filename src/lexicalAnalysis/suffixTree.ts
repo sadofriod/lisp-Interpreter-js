@@ -1,9 +1,7 @@
-import { keywords } from "constant";
-
 const createSuffixTree: StateMachine.CreateSuffixTree = (keyword) => {
 	const result: StateMachine.createSuffixTreeReturn = {};
 
-	for (let index = 1; index < keywords.length; index++) {
+	for (let index = 1; index < keyword.length; index++) {
 		const char = keyword.charAt(index);
 		const previous = keyword.charAt(index - 1);
 		const next = keyword.charAt(index + 1);
@@ -34,8 +32,5 @@ const mergeTree = (source: StateMachine.createSuffixTreeReturn, newObj: StateMac
 
 export const getKeywordsSuffixTree: StateMachine.GetKeywordsSuffixTree = (keywords) => {
 	const result: StateMachine.createSuffixTreeReturn = {};
-	for (const keyword of keywords) {
-		mergeTree(result, createSuffixTree(keyword));
-	}
-	return result;
+	return mergeTree(result, createSuffixTree(keywords));
 };
