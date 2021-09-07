@@ -1,4 +1,4 @@
-import { symbolsMap } from "../constant";
+import { symbolsMap, keywords } from "../constant";
 
 let charCache: string = "";
 let isKeyword = NaN;
@@ -41,6 +41,16 @@ export const create: AST.Create = (code, suffixTree) => {
 	let previous = 0;
 	console.log(suffixTree);
 
+	const setResult = (nodeType: AST.ASTNode["type"], value: AST.ASTNode["value"]) => {
+		const resultItem = {
+			type: nodeType,
+			value,
+			numOfLine: 1,
+			previous,
+		};
+		value && result.push(resultItem);
+	};
+
 	for (let index = 0; index < code.length; index++) {
 		const char = code.charAt(index);
 		const isSymbol = char in symbolsMap || char === " ";
@@ -55,20 +65,11 @@ export const create: AST.Create = (code, suffixTree) => {
 			if (char === ")") {
 				previous -= 1;
 			}
-			const symbolsNode: AST.ASTNode = {
-				type: "Symbols",
-				value: char,
-				numOfLine: 1,
-				previous,
-			};
-			const wordNode: AST.ASTNode = {
-				type,
-				value: val,
-				numOfLine: 1,
-				previous,
-			};
-			word && result.push(wordNode);
-			result.push(symbolsNode);
+			if (!(char in keywords)) {
+				char && setResult(type, val);
+			} else {
+				char && setResult(type, val);
+			}
 		}
 	}
 	return result;
